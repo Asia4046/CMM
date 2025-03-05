@@ -1,7 +1,7 @@
 use std::env;
 use std::fs;
 use std::process::exit;
-use std::io::{self, BufRead};
+use std::io::{self, BufRead, Write};
 
 fn run_file(path: &str) -> Result<(), String> {
     match fs::read_to_string(path) {
@@ -17,6 +17,11 @@ fn run(_contents: &str) -> Result<(), String> {
 
 fn run_prompt() -> Result<(), String> {
     print!("> ");
+    match io::stdout().flush() {
+        Ok(_) => (),
+        Err(_) => return Err("Could not flush stdout".to_string()),
+    }
+
     let mut buffer = String::new();
     let stdin = io::stdin();
     let mut handle = stdin.lock();
@@ -24,6 +29,7 @@ fn run_prompt() -> Result<(), String> {
         Ok(_) => (),
         Err(_) => return Err("Couldnt Read Line".to_string()),
     }
+    
     println!("You Wrote: {}", buffer);
     Ok(())
 }

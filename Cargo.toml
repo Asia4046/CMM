@@ -2,5 +2,9 @@
 name = "cmm"
 version = "0.1.0"
 edition = "2024"
+authors = [ "Nilesh@Asia22<kirito234875@gmail.com>" ]
+readme = "README.md"
+repository = "https://github.com/Asia4046/CMM"
+license = "GPL-3.0"
 
 [dependencies]
