@@ -15,7 +15,7 @@ fn run_file(path: &str) -> Result<(), String> {
 }
 
 fn run(contents: &str) -> Result<(), String> {
-    let scanner = Scanner::new(contents);
+    let mut scanner = Scanner::new(contents);
     let tokens = scanner.scan_tokens()?;
 
     for token in tokens {
@@ -44,7 +44,11 @@ fn run_prompt() -> Result<(), String> {
             Err(_) => return Err("Couldnt Read Line".to_string()),
         }
 
-        println!("You Wrote: {}", buffer);
+        println!("ECHO: {}", buffer);
+        match run(&buffer) {
+            Ok(_) => (),
+            Err(msg) => println!("{}", msg)
+        }
     }
 }
 
