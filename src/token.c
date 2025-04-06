@@ -13,7 +13,7 @@ token_T* init_token(char* value, int type){
     
 }
 
-static const char* token_type_to_str(int type){
+const char* token_type_to_str(int type){
     switch(type)
     {
         case TOKEN_ID : return "TOKEN_ID"; 
