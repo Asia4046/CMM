@@ -36,6 +36,18 @@ token_T* lexer_advance_with(lexer_T* lexer, token_T* token)
     return token;
 }
 
+token_T* lexer_advance_current(lexer_T* lexer, int type)
+{
+    char* value = calloc(2, sizeof(char));
+    value[0] = lexer->c;
+    value[1] = '\0';
+
+    token_T* token = init_token(value, type);
+    lexer_advance(lexer);
+
+    return token;
+}
+
 void lexer_skip_whitespace(lexer_T* lexer)
 {
     while (lexer->c == 13 || lexer->c == 10 || lexer->c == ' ' || lexer->c == '\t'){
@@ -56,6 +68,20 @@ token_T* lexer_parse_id(lexer_T* lexer)
     return init_token(value, TOKEN_ID);
 }
 
+token_T* lexer_parse_number(lexer_T* lexer)
+{
+    char* value = calloc(1, sizeof(char));
+    while(isdigit(lexer->c))
+    {
+        value = realloc(value, (strlen(value) + 2) * sizeof(char));
+        strcat(value, (char[]){lexer->c, 0});
+        lexer_advance(lexer);
+    }
+
+    return init_token(value, TOKEN_INT);
+}
+
+
 token_T* lexer_next_token(lexer_T* lexer)
 {
     if (lexer->c != '\0')
@@ -65,11 +91,25 @@ token_T* lexer_next_token(lexer_T* lexer)
             return lexer_advance_with(lexer, lexer_parse_id(lexer));
         }
 
+        if(isdigit(lexer->c))
+        {
+            return lexer_advance_with(lexer, lexer_parse_number(lexer));
+        }
+
         switch (lexer->c) {
             case '=': {
                 if(lexer_peek(lexer, 1) == '>') return lexer_advance_with(lexer, init_token("=>", TOKEN_RIGHT_ARROW));
                 return lexer_advance_with(lexer, init_token("=", TOKEN_EQUALS));
             } break;
+            case '(': return lexer_advance_current(lexer, TOKEN_LPAREN);
+            case ')': return lexer_advance_current(lexer, TOKEN_RPAREN);
+            case '{': return lexer_advance_current(lexer, TOKEN_LBRACE);
+            case '}': return lexer_advance_current(lexer, TOKEN_RBRACE);
+            case ':': return lexer_advance_current(lexer, TOKEN_COLON);
+            case ',': return lexer_advance_current(lexer, TOKEN_COMMA);
+            case '<': return lexer_advance_current(lexer, TOKEN_LT);
+            case '>': return lexer_advance_current(lexer, TOKEN_GT);
+            case ';': return lexer_advance_current(lexer, TOKEN_SEMI);
         }
     }
 
