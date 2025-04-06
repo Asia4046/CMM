@@ -10,7 +10,7 @@ void cmm_compile(char *src)
 
     while ((tok = lexer_next_token(lexer))->type != TOKEN_EOF)
     {
-        printf("TOK(%s) (%d)\n", tok->value, tok->type);
+        printf("%s\n", token_to_str(tok));
     }
 }
 

@@ -38,7 +38,7 @@ static const char* token_type_to_str(int type){
 char* token_to_str(token_T* token)
 {
     const char* type_str = token_type_to_str(token->type);
-    const char* template = "<type=%s, int_type=%d, value=%s>\n";
+    const char* template = "<type=`%s`, int_type=`%d`, value=`%s`>\n";
 
     char* str = calloc(strlen(type_str) + strlen(template) + 8, sizeof(char));
     sprintf(str, template, type_str, token->type, token->value);
