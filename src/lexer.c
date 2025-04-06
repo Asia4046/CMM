@@ -86,6 +86,8 @@ token_T* lexer_next_token(lexer_T* lexer)
 {
     if (lexer->c != '\0')
     {
+        lexer_skip_whitespace(lexer);
+
         if(isalpha(lexer->c))
         {
             return lexer_advance_with(lexer, lexer_parse_id(lexer));
@@ -98,7 +100,10 @@ token_T* lexer_next_token(lexer_T* lexer)
 
         switch (lexer->c) {
             case '=': {
-                if(lexer_peek(lexer, 1) == '>') return lexer_advance_with(lexer, init_token("=>", TOKEN_RIGHT_ARROW));
+                if(lexer_peek(lexer, 1) == '>'){
+                    return lexer_advance_with(lexer, init_token("=>", TOKEN_RIGHT_ARROW));
+                } 
+                
                 return lexer_advance_with(lexer, init_token("=", TOKEN_EQUALS));
             } break;
             case '(': return lexer_advance_current(lexer, TOKEN_LPAREN);
@@ -110,6 +115,8 @@ token_T* lexer_next_token(lexer_T* lexer)
             case '<': return lexer_advance_current(lexer, TOKEN_LT);
             case '>': return lexer_advance_current(lexer, TOKEN_GT);
             case ';': return lexer_advance_current(lexer, TOKEN_SEMI);
+            case '\0': break;
+            default: printf("[CMM_LEXER]: Unexpected Character `%c`\n", lexer->c); exit(1); break;
         }
     }
 
