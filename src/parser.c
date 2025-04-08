@@ -26,17 +26,18 @@ token_T* parser_eat(parser_T* parser, int type)
 
 AST_T* parser_parse(parser_T* parser)
 {
-    return init_ast(AST_NOOP);
+    return parser_parse_compound(parser);
 }
 
 AST_T* parser_parse_compound(parser_T* parser)
 {
-    //AST_T* compound = init_ast(AST_COMPOUND);
+    AST_T* compound = init_ast(AST_COMPOUND);
+
     while(parser->token->type != TOKEN_EOF)
     {
-        /* AST_T* child =  */ 
-        parser_parse(parser);
+
+         list_push(compound->children, parser_parse(parser));
     }
 
-    return init_ast(AST_NOOP);
+    return compound;
 }

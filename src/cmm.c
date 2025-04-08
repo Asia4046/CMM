@@ -11,7 +11,7 @@ void cmm_compile(char *src)
     parser_T* parser = init_parser(lexer);
     AST_T* root = parser_parse(parser);
 
-    // printf("%p\n", root);
+     printf("%d\n", root->children->size);
 
     token_T* tok = 0;
 

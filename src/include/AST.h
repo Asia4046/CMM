@@ -1,6 +1,8 @@
 #ifndef CMM_AST_H
 #define CMM_AST_H
 
+#include "list.h"
+
 typedef struct AST_STRUCT
 {
 
@@ -12,6 +14,8 @@ typedef struct AST_STRUCT
         AST_NOOP,
         AST_DEFINITION_TYPE
     } type;
+
+    list_T* children;
 
 } AST_T;
 
